@@ -19,12 +19,14 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotEmpty(message = "Укажите имя")
-    @Size(min = 2,max = 30,message = "Введите минимум 2 символа и не больше 30")
+    @Size(min = 2, max = 30, message = "Введите минимум 2 символа и не больше 30")
     private String username;
-    @NotEmpty(message = "Укажите имя")
-    private String password;
+    private String lastName;
+    private int age;
     @Email
     private String email;
+    @NotEmpty(message = "Укажите Email")
+    private String password;
 
 
     @NotEmpty
@@ -34,10 +36,12 @@ public class User implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Collection<Role> roles;
 
-    public User(String username, String password, String email, Collection<Role> roles) {
+    public User(String username, String lastName, int age, String email, String password, Collection<Role> roles) {
         this.username = username;
-        this.password = password;
+        this.lastName = lastName;
+        this.age = age;
         this.email = email;
+        this.password = password;
         this.roles = roles;
     }
 
@@ -102,6 +106,7 @@ public class User implements UserDetails {
         this.email = email;
     }
 
+
     public Collection<Role> getRoles() {
         return roles;
     }
@@ -110,13 +115,41 @@ public class User implements UserDetails {
         this.roles = roles;
     }
 
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public String rolesToString(){
+        StringBuilder rolesList = new StringBuilder();
+        this.getRoles()
+                .forEach(role -> rolesList.append(role).append(" "));
+        return rolesList.toString();
+    }
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
                 ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", age=" + age +
                 ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
                 ", roles=" + roles +
                 '}';
     }
@@ -126,11 +159,12 @@ public class User implements UserDetails {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(id, user.id) && Objects.equals(username, user.username) && Objects.equals(password, user.password) && Objects.equals(email, user.email) && Objects.equals(roles, user.roles);
+        return age == user.age && Objects.equals(id, user.id) && Objects.equals(username, user.username) && Objects.equals(lastName, user.lastName) && Objects.equals(email, user.email) && Objects.equals(password, user.password) && Objects.equals(roles, user.roles);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, password, email, roles);
+        return Objects.hash(id, username, lastName, age, email, password, roles);
     }
 }
+

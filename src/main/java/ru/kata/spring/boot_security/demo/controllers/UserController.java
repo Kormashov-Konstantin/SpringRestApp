@@ -20,8 +20,7 @@ public class UserController {
 
     @GetMapping
     public String showUserById(Principal principal, Model model) {
-        model.addAttribute("User", principal.getName() + " table");
-        model.addAttribute("user", userServiceImpl.findByUsername(principal.getName()));
+        model.addAttribute("Userlogin", userServiceImpl.findByEmail(principal.getName()));
         return "oneuser";
     }
 }

@@ -31,8 +31,8 @@ public class Init {
         Role roleadmin = new Role("ROLE_ADMIN");
         roleRepository.save(roleadmin);
         roleRepository.save(roleuser);
-        User admin = new User("admin", "admin", "admin@mail.ru", Collections.singleton(new Role(1L, "ROLE_ADMIN")));
-        User user = new User("user", "user", "user@mail.ru", Collections.singleton(new Role(2L, "ROLE_USER")));
+        User admin = new User("admin","adminLastName",29,"admin@mail.ru","admin",Collections.singleton(new Role(1L, "ROLE_ADMIN")));
+        User user = new User("user", "userLastName",29,"user@mail.ru","user", Collections.singleton(new Role(2L, "ROLE_USER")));
         userServiceImpl.saveUser(admin);
         userServiceImpl.saveUser(user);
     }
