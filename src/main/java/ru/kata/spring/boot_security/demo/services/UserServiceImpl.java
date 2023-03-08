@@ -19,11 +19,12 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
-public class UserServiceImpl implements UserDetailsService,UserService {
+public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
 
 
+    @Autowired
     public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
@@ -37,19 +38,6 @@ public class UserServiceImpl implements UserDetailsService,UserService {
         return userRepository.findByEmail(email);
     }
 
-
-    @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = findByEmail(email);
-        if (user == null) {
-            throw new UsernameNotFoundException(String.format("User '%s' not found",email));
-        }
-        return new org.springframework.security.core.userdetails.User(user.getEmail(),user.getPassword(),mapRolesToAuthorities(user.getRoles()));
-    }
-    private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
-        return roles.stream().map(r -> new SimpleGrantedAuthority(r.getName())).collect(Collectors.toList());
-
-    }
 
     @Override
     public List<User> getAllUsers() {
